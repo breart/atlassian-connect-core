@@ -1,0 +1,53 @@
+{
+    "name": "brezzhnev/atlassian-connect-core",
+    "type": "library",
+    "description": "Atlassian Connect Framework to build add-on for the JIRA and Confluence",
+    "keywords": [
+        "brezzhnev",
+        "atlassian",
+        "jira",
+        "confluence"
+    ],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/brezzhnev/atlassian-connect-core/issues",
+        "source": "https://github.com/brezzhnev/atlassian-connect-core"
+    },
+    "authors": [
+        {
+            "name": "Artem Brezhnev",
+            "email": "brezzhnev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "firebase/php-jwt": "^5.0",
+        "illuminate/support": "~5.1"
+    },
+    "require-dev": {
+        "mockery/mockery": "^0.9.9",
+        "orchestra/testbench": "~3.0",
+        "phpunit/phpunit": "^6.3",
+        "squizlabs/php_codesniffer": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "AtlassianConnectCore\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AtlassianConnectCore\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "develop"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
