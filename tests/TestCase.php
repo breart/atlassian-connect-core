@@ -11,6 +11,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
 
+        $this->migrate();
+
         \Illuminate\Support\Facades\DB::beginTransaction();
     }
 
@@ -63,8 +65,33 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         $app->setBasePath(__DIR__ . '/files');
 
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => ''
+        ]);
+
         $app['config']->set('auth.providers.users.model', \AtlassianConnectCore\ServiceProvider::class);
         $app['config']->set('auth.guards.web.driver', 'jwt');
+    }
+
+    /**
+     * Run migrations
+     */
+    protected function migrate()
+    {
+        if (app()->version() >= 5.4) {
+            $migrator = app('migrator');
+
+            if (!$migrator->repositoryExists()) {
+                $this->artisan('migrate:install');
+            }
+
+            $migrator->run([__DIR__ . '/../database/migrations']);
+
+            $this->artisan('migrate', ['--path' => __DIR__ . '/../database/migrations']);
+        }
     }
 
     /**
