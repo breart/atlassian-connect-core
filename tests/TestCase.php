@@ -12,8 +12,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         parent::setUp();
 
         $this->migrate();
-
-        \Illuminate\Support\Facades\DB::beginTransaction();
     }
 
     /**
@@ -22,8 +20,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function tearDown()
     {
         \Mockery::close();
-
-        \Illuminate\Support\Facades\DB::rollBack();
 
         parent::tearDown();
     }

@@ -7,7 +7,12 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Atlassian Connect Framework to build add-ons for the JIRA and Confluence.
+Atlassian Connect Framework to build add-ons for the JIRA and Confluence
+
+## Requirements
+
+* Laravel 5.5
+* PHP 7+
 
 ## Getting Started
 
