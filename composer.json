@@ -3,10 +3,12 @@
     "type": "library",
     "description": "Atlassian Connect Framework to build add-on for the JIRA and Confluence",
     "keywords": [
+        "laravel",
         "brezzhnev",
         "atlassian",
         "jira",
-        "confluence"
+        "confluence",
+        "add-on"
     ],
     "license": "MIT",
     "support": {
