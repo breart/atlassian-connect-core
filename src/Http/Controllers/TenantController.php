@@ -2,7 +2,7 @@
 
 namespace AtlassianConnectCore\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use AtlassianConnectCore\Facades\Descriptor;
 use AtlassianConnectCore\Services\TenantService;
 

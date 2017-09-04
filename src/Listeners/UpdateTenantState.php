@@ -11,7 +11,7 @@ use AtlassianConnectCore\Services\TenantService;
 /**
  * Class UpdateTenantState
  *
- * @package App\Listeners
+ * @package AtlassianConnectCore\Listeners
  */
 class UpdateTenantState
 {

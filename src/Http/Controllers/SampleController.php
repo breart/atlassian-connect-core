@@ -2,7 +2,7 @@
 
 namespace AtlassianConnectCore\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 
 /**
  * Class SampleController

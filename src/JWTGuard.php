@@ -2,21 +2,17 @@
 
 namespace AtlassianConnectCore;
 
-use AtlassianConnectCore\Helpers\JWTHelper;
 use Illuminate\Auth\GuardHelpers;
-use Illuminate\Auth\Recaller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Support\Str;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 /**
  * Class JWTGuard
  *
- * @package App\Providers\Guards
+ * @package AtlassianConnectCore
  */
 class JWTGuard implements Guard
 {
@@ -25,7 +21,7 @@ class JWTGuard implements Guard
     /**
      * The request instance.
      *
-     * @var Request
+     * @var \Illuminate\Http\Request
      */
     protected $request;
 
@@ -155,7 +151,7 @@ class JWTGuard implements Guard
      */
     protected function getTokenKey($token)
     {
-        $decoded = JWTHelper::decode($token);
+        $decoded = \AtlassianConnectCore\Helpers\JWTHelper::decode($token);
 
         return array_get($decoded, 'body.iss');
     }
@@ -214,7 +210,7 @@ class JWTGuard implements Guard
      */
     protected function cycleRememberToken(AuthenticatableContract $user)
     {
-        $user->setRememberToken($token = Str::random(60));
+        $user->setRememberToken($token = str_random(60));
 
         $this->provider->updateRememberToken($user, $token);
     }
@@ -305,7 +301,7 @@ class JWTGuard implements Guard
         }
 
         if ($recaller = $this->request->cookies->get($this->getRecallerName())) {
-            return new Recaller($recaller);
+            return new \Illuminate\Auth\Recaller($recaller);
         }
     }
 

@@ -7,7 +7,7 @@ use AtlassianConnectCore\Services\TenantService;
 /**
  * Class CreateRepositoryHook
  *
- * @package App\Listeners
+ * @package AtlassianConnectCore\Listeners
  */
 class CreateOrUpdateTenant
 {

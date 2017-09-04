@@ -2,13 +2,13 @@
 
 namespace AtlassianConnectCore\Http\Middleware;
 
-use AtlassianConnectCore\Helpers\JWTHelper;
 use AtlassianConnectCore\Services\TenantService;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class JWTAuth
  *
- * @package App\Http\Middleware
+ * @package AtlassianConnectCore\Http\Middleware
  */
 class JWTAuth
 {
@@ -50,7 +50,7 @@ class JWTAuth
                 );
             }
 
-            $jwt = JWTHelper::create(
+            $jwt = \AtlassianConnectCore\Helpers\JWTHelper::create(
                 $request->url(),
                 $request->method(),
                 $tenant->client_key,
@@ -61,7 +61,7 @@ class JWTAuth
         }
 
         // Authenticate user
-        if(!\Auth::attempt()) {
+        if(!Auth::attempt()) {
             throw new \Illuminate\Validation\UnauthorizedException();
         }
 
