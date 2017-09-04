@@ -12,7 +12,7 @@ Atlassian Connect Framework to build add-ons for the JIRA and Confluence
 ## Requirements
 
 * Laravel 5.5
-* PHP 7+
+* PHP ~7.0
 
 ## Getting Started
 
@@ -22,16 +22,6 @@ Install dependency via Composer
 
 ``` bash
 $ composer require brezzhnev/atlassian-connect-core
-```
-
-Add provider and alias to your `config/app.php`
-
-``` php
-AtlassianConnectCore\ServiceProvider::class
-
-...
-
-'Descriptor' => AtlassianConnectCore\Facades\Descriptor::class
 ```
 
 Register **route middleware** `jwt` by adding to the `app\Http\Kernel.php` following line
@@ -88,7 +78,7 @@ protected $subscribe = [
 ];
 ```
 
-7. Configure database and run
+Configure database and run
 
 ```
 php artisan migrate
@@ -112,6 +102,8 @@ After clicking you'll see two checkboxes that must be selected. Apply your chang
 
 For installing the add-on in the instance it should see your server.
 If you working locally the easiest way is use [ngrok](https://ngrok.com/).
+
+After you are visible for the JIRA or Atlassian instance you should put your actual website URL to environment variable `PLUGIN_URL`. Also, you need to configure your add-on by editing the file `config/plugin.php`. Most values may be overwritten using env vars. 
 
 Then you need to upload the add-on. Click "Upload add-on" and paste your public URL with descriptor path, 
 eg. `https://d1ea31ce.ngrok.io/atlassian-connect.json` or `https://yourplugindomain.com/atlassian-connect.json`
