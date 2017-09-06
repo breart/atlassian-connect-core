@@ -165,6 +165,12 @@ Run the following in the package folder:
 vendor/bin/phpunit
 ```
 
+## TODOs
+
+* Add OAuth authentication method
+* Implement descriptor builder and validator
+* Implement webhooks gateway
+
 ## Security
 
 If you discover any security related issues, please email **brezzhnev@gmail.com** instead of using the issue tracker.
