@@ -152,6 +152,20 @@ You can disable it by setting to `false` config value `plugin.loadRoutes`.
 
 You can use `Descriptor` facade to customize or create from scratch your own descriptor contents.
 
+For example, you can customize it by adding to the `app\Providers\AppServiceProvider` in `boot` section the following:
+
+```
+Descriptor::base() // base descriptor contents
+    ->setScopes(['admin' , 'act_as_user'])
+    ->withModules([
+        'webhooks' => [[
+            'event' => 'jira:issue_created',
+            'url' => route('webhookHandlerRouteName')
+        ]]
+    ])
+    ->set('version', $this->getLatestPluginVersion());
+```
+
 ### Console commands
 
 * `plugin:install` is a helper command that creates "dummy" tenant with fake data and publishes package resources (config, views, assets)

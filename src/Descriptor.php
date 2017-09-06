@@ -107,6 +107,77 @@ class Descriptor
     }
 
     /**
+     * The helper method to use fluent interface
+     *
+     * @return $this
+     */
+    public function fluent()
+    {
+        return $this;
+    }
+
+    /**
+     * Set specific modules
+     *
+     * @param array $modules
+     *
+     * @return $this
+     */
+    public function withModules(array $modules)
+    {
+        $this->set('modules', $modules);
+
+        return $this;
+    }
+
+    /**
+     * Remove modules
+     *
+     * @return $this
+     */
+    public function withoutModules()
+    {
+        $this->set('modules', []);
+
+        return $this;
+    }
+
+    /**
+     * Set scopes
+     *
+     * @param array $scopes
+     *
+     * @return $this
+     */
+    public function setScopes(array $scopes)
+    {
+        $this->set('scopes', $scopes);
+
+        return $this;
+    }
+
+    /**
+     * Set base contents
+     *
+     * @return $this
+     */
+    public function base()
+    {
+        $this->contents = array_only($this->defaultContents(), [
+            'name',
+            'description',
+            'key',
+            'baseUrl',
+            'vendor',
+            'version',
+            'authentication',
+            'lifecycle'
+        ]);
+
+        return $this;
+    }
+
+    /**
      * Default descriptor contents
      *
      * @return array
