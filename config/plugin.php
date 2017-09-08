@@ -77,11 +77,11 @@ return [
      | Authentication Type
      |--------------------------------------------------------------------------
      |
-     | The type of authentication. Currently only JWT is supported
+     | The type of authentication. Possible values: JWT, jwt, NONE, none
      |
      */
 
-    'authType' => 'jwt',
+    'authType' => env('PLUGIN_AUTH_TYPE', 'jwt'),
 
     /*
      |--------------------------------------------------------------------------
