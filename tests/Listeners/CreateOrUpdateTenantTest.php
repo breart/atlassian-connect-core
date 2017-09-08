@@ -22,18 +22,7 @@ class CreateOrUpdateTest extends \AtlassianConnectCore\Tests\TestCase
         parent::setUp();
 
         $this->tenantService = $this->app->make(\AtlassianConnectCore\Services\TenantService::class);
-        $this->request = new \Illuminate\Http\Request([
-            'key' => 'test',
-            'clientKey' => 'c4fdbf9b-0a07-4654-9442-239406ae4e07',
-            'publicKey' => 'test',
-            'sharedSecret' => 'af7EKBf79AuaqBEthgiXIqEaEBsxYqndLFh/8VuSPeqE8flI6nJCCLRODOPwQpAXyasUm/f01/h7+diwqMdAYa',
-            'serverVersion' => '100058',
-            'pluginsVersion' => '1.3.175',
-            'baseUrl' => 'https://test.atlassian.net',
-            'productType' => 'jira',
-            'description' => 'Testing tenant',
-            'eventType' => 'installed'
-        ]);
+        $this->request = $this->createTenantRequest();
     }
 
     public function testHandle()

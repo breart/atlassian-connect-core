@@ -37,6 +37,7 @@ class CreateOrUpdateTenant
             'addon_key' => $event->request->input('key'),
             'client_key' => $event->request->input('clientKey'),
             'public_key' => $event->request->input('publicKey'),
+            'oauth_client_token' => $event->request->input('oauthClientId'),
             'shared_secret' => $event->request->input('sharedSecret'),
             'server_version' => $event->request->input('serverVersion'),
             'plugin_version' => $event->request->input('pluginsVersion'),

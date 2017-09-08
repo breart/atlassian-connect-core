@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $id
  * @property string $addon_key
  * @property string $client_key
+ * @property string $oauth_client_token
  * @property string $public_key
  * @property string $shared_secret
  * @property string $server_version
@@ -41,6 +42,7 @@ class Tenant extends Model implements \Illuminate\Contracts\Auth\Authenticatable
         'addon_key',
         'client_key',
         'public_key',
+        'oauth_client_token',
         'shared_secret',
         'server_version',
         'plugin_version',

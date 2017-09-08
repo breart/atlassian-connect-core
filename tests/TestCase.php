@@ -132,7 +132,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'baseUrl'        => $this->tenantData('base_url'),
             'productType'    => $this->tenantData('product_type'),
             'description'    => $this->tenantData('description'),
-            'eventType'      => $this->tenantData('event_type')
+            'eventType'      => $this->tenantData('event_type'),
+            'oauthClientId'  => $this->tenantData('oauth_client_token'),
         ], $merge));
     }
 
@@ -156,7 +157,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'base_url' => 'https://test.atlassian.net',
             'product_type' => 'jira',
             'description' => 'Testing tenant',
-            'event_type' => 'installed'
+            'event_type' => 'installed',
+            'oauth_client_token' => 'eyJob3N0S2V5IjoiZjhlMTEyMTYtMjRiYS1zNDRlLTkxYjgtODQ1YWYzZDk0NWYwIiwiYWRkb25LZXkiOiJzYW1wbGUtcGx1Z2luIn0='
         ];
 
         return ($key === null ? $data : array_get($data, $key, $default));
