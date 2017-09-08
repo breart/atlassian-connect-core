@@ -5,7 +5,7 @@ namespace AtlassianConnectCore\Listeners;
 use AtlassianConnectCore\Services\TenantService;
 
 /**
- * Class CreateRepositoryHook
+ * Class CreateOrUpdateTenant
  *
  * @package AtlassianConnectCore\Listeners
  */

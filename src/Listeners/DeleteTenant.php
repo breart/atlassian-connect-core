@@ -5,7 +5,7 @@ namespace AtlassianConnectCore\Listeners;
 use AtlassianConnectCore\Services\TenantService;
 
 /**
- * Class UpdateTenantState
+ * Class DeleteTenant
  *
  * @package AtlassianConnectCore\Listeners
  */
