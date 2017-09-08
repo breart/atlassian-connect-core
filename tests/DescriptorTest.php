@@ -87,6 +87,55 @@ class DescriptorTest extends TestCase
         static::assertEquals($unknown, null);
     }
 
+    public function testBase()
+    {
+        $this->descriptor->base();
+
+        static::assertEquals(
+            ['name', 'description', 'key', 'baseUrl', 'vendor', 'version', 'authentication', 'lifecycle'],
+            array_keys($this->descriptor->contents())
+        );
+    }
+
+    public function testFluent()
+    {
+        static::assertInstanceOf(\AtlassianConnectCore\Descriptor::class, $this->descriptor->fluent());
+    }
+
+    public function testWithModules()
+    {
+        $modules = [
+            'webhooks' => [[
+                'event' => 'jira:issue_created',
+                'url' => '/'
+            ]]
+        ];
+
+        $this->descriptor->withModules($modules);
+
+        static::assertEquals($modules, array_get($this->descriptor->contents(), 'modules'));
+    }
+
+    public function testWithoutModules()
+    {
+        $this->testWithModules();
+
+        static::assertNotEmpty(array_get($this->descriptor->contents(), 'modules'));
+
+        $this->descriptor->withoutModules();
+
+        static::assertEquals([], array_get($this->descriptor->contents(), 'modules'));
+    }
+
+    public function testSetScopes()
+    {
+        $scopes = ['ACT_AS_USER', 'ADMIN'];
+
+        $this->descriptor->setScopes($scopes);
+
+        static::assertEquals($scopes, array_get($this->descriptor->contents(), 'scopes'));
+    }
+
     /**
      * Create descriptor instance
      *
