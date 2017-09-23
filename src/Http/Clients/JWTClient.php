@@ -84,7 +84,6 @@ class JWTClient
         $clientConfig = array_merge(['base_uri' => $baseUrl], $config);
 
         if($paginate && $this->paginator instanceof Paginator) {
-
             $this->paginator->setConfig([
                 'url' => $url,
                 'client' => $this->client,
@@ -99,7 +98,7 @@ class JWTClient
         $contents = $response->getBody()
             ->getContents();
 
-        if($contents && $decoded = json_decode($contents)) {
+        if($contents && $decoded = json_decode($contents, true)) {
             return $decoded;
         }
 
@@ -202,7 +201,10 @@ class JWTClient
 
         return $this->sendRequest('post', $url, array_merge($config, [
             'headers' => ['X-Atlassian-Token' => 'nocheck'],
-            'body' => ['file' => $resource]
+            'multipart' => [[
+                'name' => 'file',
+                'contents' => $resource
+            ]]
         ]));
     }
 
@@ -244,7 +246,7 @@ class JWTClient
         $alias = $this->tenant->product_type;
 
         if(!$paginatorClass = array_get($this->paginators(), $alias)) {
-            throw new \Exception('Class for the paginator alias  ' . $alias . ' could not be found');
+            throw new \Exception('Class for the paginator alias "' . $alias . '" could not be found');
         }
 
         $this->paginator = new $paginatorClass($config);
