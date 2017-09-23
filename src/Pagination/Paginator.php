@@ -241,7 +241,7 @@ class Paginator implements \Iterator
     public function valid()
     {
         $isFetched = array_key_exists($this->position, $this->items);
-        $isReached = $this->total !== null && $this->position < $this->total;
+        $isReached = $this->total !== null && $this->position === $this->total;
 
         return $isFetched || (!$isReached && count($this->fetchPage($this->position)) > 0);
     }
