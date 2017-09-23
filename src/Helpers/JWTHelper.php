@@ -36,15 +36,15 @@ class JWTHelper
      *
      * @param string $url URL of the request
      * @param string $method HTTP method
-     * @param string $addOnKey Key of the add-on
+     * @param string $issuer Key of the add-on
      * @param string $secret Shared secret of the Tenant
      *
      * @return string
      */
-    public static function create($url, $method, $addOnKey, $secret)
+    public static function create(string $url, string $method, string $issuer, string $secret)
     {
         $payload = [
-            'iss' => $addOnKey,
+            'iss' => $issuer,
             'iat' => time(),
             'exp' => time() + 86400,
             'qsh' => static::qsh($url, $method)
@@ -68,7 +68,10 @@ class JWTHelper
     {
         $method = strtoupper($method);
         $parts = parse_url($url);
-        $path = $parts['path'];
+
+        // Remove "/wiki" part from the path for the Confluence
+        // Really, I didn't find this part in the docs, but it works
+        $path = str_replace('/wiki', '', $parts['path']);
 
         $canonicalQuery = '';
 
@@ -100,5 +103,36 @@ class JWTHelper
         $qsh = hash('sha256', $qshString);
 
         return $qsh;
+    }
+
+    /**
+     * JWT Authentication middleware for Guzzle
+     *
+     * @param string $issuer Add-on key in most cases
+     * @param string $secret Shared secret
+     *
+     * @return callable
+     */
+    public static function authTokenMiddleware(string $issuer, string $secret)
+    {
+        return \GuzzleHttp\Middleware::mapRequest(
+            function (\Psr\Http\Message\RequestInterface $request)
+            use ($issuer, $secret)
+        {
+            // Generate token
+            $token = static::create(
+                (string) $request->getUri(),
+                $request->getMethod(),
+                $issuer,
+                $secret
+            );
+
+            return new \GuzzleHttp\Psr7\Request(
+                $request->getMethod(),
+                $request->getUri(),
+                array_merge($request->getHeaders(), ['Authorization' => 'JWT ' . $token]),
+                $request->getBody()
+            );
+        });
     }
 }
