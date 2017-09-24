@@ -154,7 +154,7 @@ You can use `Descriptor` facade to customize or create from scratch your own des
 
 For example, you can customize it by adding to the `app\Providers\AppServiceProvider` in `boot` section the following:
 
-```
+``` php
 Descriptor::base() // base descriptor contents
     ->setScopes(['admin' , 'act_as_user'])
     ->withModules([
@@ -165,6 +165,27 @@ Descriptor::base() // base descriptor contents
     ])
     ->set('version', $this->getLatestPluginVersion());
 ```
+
+> Warning: if you are using `route` helper in the `AppServiceProvider` you should have `RouteServiceProvider` defined above `AppServiceProvider` in your `app.php` config.
+
+### Performing requests
+
+In most of cases in development add-on for Atlassian Product you need to perform requests to the instance. 
+
+For this case you should use `JWTClient`. It uses [GuzzleHttp](https://github.com/guzzle/guzzle) as HTTP client and 
+if you want to have custom handling (middlewares etc.) you can pass client instance to the constructor.
+
+#### Pagination
+
+If you want to send a request to an endpoint with pagination you should use `JWTClient::paginate` method. In most cases
+you don't need to pass paginator instance to the `JWTClient` constructor because it will instantiate automatically by resolving 
+your Tenant product type (JIRA or Confluence), but you always can use specific paginator.
+
+There are two paginators:
+* `JiraPaginator`
+* `ConfluencePaginator`
+
+Of course you can extend `Paginator` class and create your own.
 
 ### Console commands
 
@@ -179,11 +200,11 @@ Run the following in the package folder:
 vendor/bin/phpunit
 ```
 
-## TODOs
+## TODO
 
-* Add OAuth authentication method
 * Implement descriptor builder and validator
-* Implement webhooks gateway
+* Implement webhooks manager
+* Take out pagination and make more abstract
 
 ## Security
 
