@@ -47,7 +47,7 @@ class Paginator implements \Iterator
      *
      * @var array
      */
-    protected $clientConfig;
+    protected $clientConfig = [];
 
     /**
      * The name of key representing limitation of results per page
@@ -132,6 +132,7 @@ class Paginator implements \Iterator
      * @var array
      */
     private $fillable = [
+        'type',
         'url',
         'client',
         'clientConfig',
@@ -151,6 +152,20 @@ class Paginator implements \Iterator
      * @var int
      */
     private $fetchedCount = 0;
+
+    /**
+     * Debugging information
+     *
+     * @var array
+     */
+    private $dump;
+
+    /**
+     * Last response contents
+     *
+     * @var array
+     */
+    private $lastResponse = [];
 
     /**
      * Paginator constructor.
@@ -188,6 +203,10 @@ class Paginator implements \Iterator
      */
     public function validateConfig()
     {
+        if(!$this->type || !in_array($this->type, [self::TYPE_PAGE, self::TYPE_OFFSET, self::TYPE_NEXT])) {
+            throw new PaginationException('Pagination type is undefined or invalid');
+        }
+
         if(!$this->client) {
             throw new PaginationException('HTTP Client should be defined');
         }
@@ -195,6 +214,26 @@ class Paginator implements \Iterator
         if(!$this->url) {
             throw new PaginationException('Request URL should be defined');
         }
+    }
+
+    /**
+     * Get items
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Get last response
+     *
+     * @return array
+     */
+    public function getLastResponse()
+    {
+        return $this->lastResponse;
     }
 
     /**
@@ -208,7 +247,7 @@ class Paginator implements \Iterator
         $this->offset = $this->offset ?? ($this->type === self::TYPE_PAGE ? 1 : 0);
 
         // Prepare for the first fetching
-        $this->prepareNextPage([]);
+        $this->prepareNextPage();
     }
 
     /**
@@ -241,9 +280,41 @@ class Paginator implements \Iterator
     public function valid()
     {
         $isFetched = array_key_exists($this->position, $this->items);
-        $isReached = $this->total !== null && $this->position === $this->total;
 
+        // Check for reaching ends, firstly we need to check the equality between total value and current position
+        // For the NEXT type, next link should have appeared in the response
+        $isReached = $this->isReachedTotal() || $this->isNextTypeReached();
+
+        // Valid until total number not reached, requested item already fetched or response isn't absent
         return $isFetched || (!$isReached && count($this->fetchPage($this->position)) > 0);
+    }
+
+    /**
+     * Whether position is reached to total number of items
+     *
+     * @return bool
+     */
+    protected function isReachedTotal()
+    {
+        if($this->total === null) {
+            return false;
+        }
+
+        return $this->position === $this->total;
+    }
+
+    /**
+     * Whether position is reached of the NEXT type of pagination
+     *
+     * @return bool
+     */
+    protected function isNextTypeReached()
+    {
+        if($this->type !== self::TYPE_NEXT || $this->position === 0) {
+            return false;
+        }
+
+        return !array_has($this->lastResponse, $this->nextKey);
     }
 
     /**
@@ -265,9 +336,11 @@ class Paginator implements \Iterator
 
         $response = $this->sendRequest($this->url, $this->clientConfig);
 
+        $this->lastResponse = $response;
+
         // If duplicated response exist it means that forever loop there is a place to be
         // So we need to abort further fetches
-        if($this->preventDuplicatedResponse($response)) {
+        if($this->preventDuplicatedResponse()) {
             return [];
         }
 
@@ -277,41 +350,37 @@ class Paginator implements \Iterator
 
         $this->items = array_merge($this->items, $items);
 
-        $this->grabTotalCount($response);
+        $this->grabTotalCount();
 
-        $this->prepareNextPage($response);
+        $this->prepareNextPage();
 
         return $items;
     }
 
     /**
      * Grab total count value from response
-     *
-     * @param array $response
      */
-    protected function grabTotalCount($response)
+    protected function grabTotalCount()
     {
         if($this->total !== null || !$this->totalKey) {
             return;
         }
 
-        $this->total = array_get($response, $this->totalKey);
+        $this->total = array_get($this->lastResponse, $this->totalKey);
     }
 
     /**
      * Prepare paginator for the next page fetching
-     *
-     * @param array $response
      */
-    protected function prepareNextPage($response)
+    protected function prepareNextPage()
     {
         $this->increment();
 
         if($this->type === self::TYPE_NEXT) {
 
             // Check for "next" key containing next page URL
-            if(strlen($this->nextKey) && array_has($response, $this->nextKey)) {
-                $this->url = array_get($response, $this->nextKey);
+            if(strlen($this->nextKey) && array_has($this->lastResponse, $this->nextKey)) {
+                $this->url = array_get($this->lastResponse, $this->nextKey);
                 $this->clientConfig = $this->mergeClientConfig(['query' => $this->extractQueryParams($this->url)]);
             }
         }
@@ -374,13 +443,11 @@ class Paginator implements \Iterator
     /**
      * Check for duplicated response
      *
-     * @param mixed $response
-     *
      * @return bool Whether response is duplicated
      */
-    protected function preventDuplicatedResponse($response)
+    protected function preventDuplicatedResponse()
     {
-        $hash = $this->hashResponse($response);
+        $hash = $this->hashResponse($this->lastResponse);
 
         if(in_array($hash, $this->hashedResponses)) {
             return true;
