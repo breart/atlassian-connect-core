@@ -141,7 +141,7 @@ The following routes registered by default
 
 * `GET /atlassian-connect.json` descriptor contents
 * `POST /installed` add-on installed callback
-* `POST /uninstaled` add-on uninstalled callback
+* `POST /uninstalled` add-on uninstalled callback
 * `POST /enabled` add-on enabled callback
 * `POST /disabled` add-on disabled callback
 * `GET /hello` sample page to persuade all working correctly
