@@ -166,6 +166,8 @@ Descriptor::base() // base descriptor contents
     ->set('version', $this->getLatestPluginVersion());
 ```
 
+> Warning: if you are using `route` helper in the `AppServiceProvider` you should have `RouteServiceProvider` defined above `AppServiceProvider` in your `app.php` config.
+
 ### Console commands
 
 * `plugin:install` is a helper command that creates "dummy" tenant with fake data and publishes package resources (config, views, assets)
