@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.2.0] - 2017-09-24
 
 ### Added
-- `JWTClient` to create requests to the JIRA/Confluence
+- `JWTClient` to create requests to the JIRA/Confluence (closes #3)
 - Pagination (used by `JWTClient`)
 - Note about using route helper in the `AppServiceProvider` to the README
 
