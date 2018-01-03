@@ -23,13 +23,13 @@ Install dependency via Composer
 $ composer require brezzhnev/atlassian-connect-core
 ```
 
-Register **route middleware** `jwt` by adding to the `app\Http\Kernel.php` following line
+Register **route middleware** `jwt` by adding to `app\Http\Kernel.php` the following line:
 
 ``` php
 'jwt' => \AtlassianConnectCore\Http\Middleware\JWTAuth::class
 ```
 
-Set authentication driver to `jwt` in `config/auth.php`
+Set authentication driver to `jwt` in `config/auth.php`:
 
 ``` php
 'guards' => [
@@ -40,7 +40,7 @@ Set authentication driver to `jwt` in `config/auth.php`
 ...
 ```
 
-Set model class in `config/auth.php` **providers** section
+Set model class in `config/auth.php` **providers** section:
 
 ``` php
 'providers' => [
@@ -51,22 +51,9 @@ Set model class in `config/auth.php` **providers** section
 ...
 ```
 
-Register plugin events by adding to the `app/Providers/EventServiceProvider.php` to the `listen` property value following
+Register the subscriber in the `app/Providers/EventServiceProvider.php`:
 
 ``` php
-\AtlassianConnectCore\Events\Installed::class => [
-    \AtlassianConnectCore\Listeners\CreateOrUpdateTenant::class
-],
-\AtlassianConnectCore\Events\Uninstalled::class => [
-    \AtlassianConnectCore\Listeners\DeleteTenant::class
-]
-```
-
-> You can use any add-on events to register your own listeners
-
-Register subscriber in the same file:
-
-```
 /**
  * The subscriber classes to register.
  *
@@ -77,14 +64,14 @@ protected $subscribe = [
 ];
 ```
 
-Configure database and run
+Configure database and run the following:
 
 ```
 php artisan migrate
 php artisan plugin:install
 ```
 
-Command `php artisan plugin:install` will publish config, views and resources that you can change whatever you want.
+The command `php artisan plugin:install` will publish config, views and resources that you can change for your needs.
 
 Also, it will create "dummy" tenant needed for local testing and development 
 without the need of installing the add-on in real JIRA or Confluence instance.
@@ -92,17 +79,19 @@ without the need of installing the add-on in real JIRA or Confluence instance.
 ### Get it working
 
 If your application returns the add-on descriptor on the request 
-to URL `http://localhost:8000/atlassian-connect.json` it means you are close to getting it working and you can
+to URL `http://localhost:8000/atlassian-connect.json` it means you are close to happiness and you can
 install the add-on.
 
-Firstly, you need to enable development options. 
-Go to the "Manage add-ons" page. You'll see the link "Settings" at bottom of page. 
+Firstly, you need to enable the development options. 
+Go to the "Manage add-ons" page. You'll see the link "Settings" at bottom of the page. 
 After clicking you'll see two checkboxes that must be selected. Apply your changes.
 
-For installing the add-on in the instance it should see your server.
-If you working locally the easiest way is use [ngrok](https://ngrok.com/).
+For installing the add-on in the instance, the last one should see your server.
+If you are working locally the easiest way is to use [ngrok](https://ngrok.com/).
 
-After you are visible for the JIRA or Atlassian instance you should put your actual website URL to environment variable `PLUGIN_URL`. Also, you need to configure your add-on by editing the file `config/plugin.php`. Most values may be overwritten using env vars. 
+After you are visible in the worldwide you should put your actual website URL to environment variable `PLUGIN_URL`.
+Also, you need to configure your add-on by editing the file `config/plugin.php`. 
+Most values may be overwritten using env vars. 
 
 Then you need to upload the add-on. Click "Upload add-on" and paste your public URL with descriptor path, 
 eg. `https://d1ea31ce.ngrok.io/atlassian-connect.json` or `https://yourplugindomain.com/atlassian-connect.json`
@@ -112,7 +101,7 @@ eg. `https://d1ea31ce.ngrok.io/atlassian-connect.json` or `https://yourplugindom
 After successfully installing you can see "Your add-on" top menu item (in case of JIRA). 
 You also can go to the add-on general page by direct link `:product_base_url/plugins/servlet/ac/sample-plugin/hello-page`
 
-Instead `:product_base_url` you should put your JIRA or Cofluence instance URL (eg. `https://google-dev.atlassian.net`).
+> Instead `:product_base_url` you should put your JIRA or Cofluence instance URL (eg. `https://google-dev.atlassian.net`).
 
 If you see page working, the application configured and add-on installed correctly.
 
@@ -120,24 +109,25 @@ If you see page working, the application configured and add-on installed correct
 
 Instead of using `plugin:install` you can perform actions manually.
 
-To copy all publishes you should use following commands:
+To copy all the publishes you should use the following command:
 
 ```
-artisan vendor:publish --provider="AtlassianConnectCore\ServiceProvider"
+php artisan vendor:publish --provider="AtlassianConnectCore\ServiceProvider"
 ```
 
 To copy only specific publish you must call this command with option `--tag`. 
-Value can be `public` (to copy assets), `views` and `config`.
+The value can be `public` (to copy assets), `views` and `config`.
 
 ## Workflow
 
 ### Add-On Configuration
 
-After copying publishes you can see the file `config/plugin.php` in your application. Please, use this configuration file to change add-on properties.
+After copying publishes you can see the file `config/plugin.php` in your application. 
+Please, use this configuration file to change add-on properties.
 
 ### Default routes
 
-The following routes registered by default
+The following routes are registered by default:
 
 * `GET /atlassian-connect.json` descriptor contents
 * `POST /installed` add-on installed callback
@@ -146,7 +136,7 @@ The following routes registered by default
 * `POST /disabled` add-on disabled callback
 * `GET /hello` sample page to persuade all working correctly
 
-You can disable it by setting to `false` config value `plugin.loadRoutes`.
+You can disable them by setting to `false` config value `plugin.loadRoutes`.
 
 ### Descriptor
 
@@ -170,10 +160,11 @@ Descriptor::base() // base descriptor contents
 
 ### Performing requests
 
-In most of cases in development add-on for Atlassian Product you need to perform requests to the instance. 
+In most cases of add-on development for Atlassian Product you need to perform requests to the instance. 
 
-For this case you should use `JWTClient`. It uses [GuzzleHttp](https://github.com/guzzle/guzzle) as HTTP client and 
-if you want to have custom handling (middlewares etc.) you can pass client instance to the constructor.
+For this case you can use `JWTClient`. It uses [GuzzleHttp](https://github.com/guzzle/guzzle) as HTTP client. 
+
+> If you want to have custom handling (middlewares etc.) you can pass client instance to the constructor.
 
 #### Pagination
 
@@ -186,6 +177,44 @@ There are two paginators:
 * `ConfluencePaginator`
 
 Of course you can extend `Paginator` class and create your own.
+
+#### Examples
+
+**Get a Confluence page content**
+
+``` php
+use AtlassianConnectCore\Http\Clients\JWTClient;
+
+...
+
+
+public function pageContent(int $id): array
+{
+    $client = new JWTClient($this->tenant); // or Auth::user() if you performing a request from the instance
+    
+    return $client->get('rest/api/content/ . $id', [
+        'query' => [
+            'expand' => 'body.storage'
+        ]
+    ]);
+}
+```
+
+**Get a JIRA issue**
+
+``` php
+use AtlassianConnectCore\Http\Clients\JWTClient;
+
+...
+
+
+public function viewIssue(string $key): array
+{
+    $client = new JWTClient($this->tenant);
+    
+    return $client->get('rest/api/2/issue/ . $key');
+}
+```
 
 ### Console commands
 
