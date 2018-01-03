@@ -16,6 +16,9 @@ class PluginEventSubscriber
      */
     public function subscribe($events)
     {
+        $events->listen(\AtlassianConnectCore\Events\Installed::class, CreateOrUpdateTenant::class);
+        $events->listen(\AtlassianConnectCore\Events\Uninstalled::class, DeleteTenant::class);
+
         $events->listen([
             \AtlassianConnectCore\Events\Installed::class,
             \AtlassianConnectCore\Events\Uninstalled::class,
