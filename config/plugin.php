@@ -114,5 +114,15 @@ return [
      |
      */
 
-    'safeDelete' => true
+    'safeDelete' => true,
+
+    /*
+     |--------------------------------------------------------------------------
+     | The webhook listeners
+     |--------------------------------------------------------------------------
+     |
+     | You can define here listeners of the webhook events
+     |
+     */
+    'webhooks' => []
 ];
