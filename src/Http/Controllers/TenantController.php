@@ -2,8 +2,10 @@
 
 namespace AtlassianConnectCore\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use AtlassianConnectCore\Facades\Descriptor;
+use AtlassianConnectCore\Facades\Webhook;
 use AtlassianConnectCore\Services\TenantService;
 
 /**
@@ -76,5 +78,20 @@ class TenantController extends Controller
     public function disabled(\AtlassianConnectCore\Http\Requests\DisabledRequest $request)
     {
         event(new \AtlassianConnectCore\Events\Disabled($request));
+    }
+
+    /**
+     * Handle an incoming webhook
+     *
+     * @param string $name Event name
+     *
+     * @param Request $request
+     */
+    public function webhook(string $name, Request $request)
+    {
+        Webhook::fire($name, [
+            'tenant' => \Illuminate\Support\Facades\Auth::user(),
+            'request' => $request
+        ]);
     }
 }

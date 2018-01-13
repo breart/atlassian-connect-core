@@ -216,6 +216,83 @@ public function viewIssue(string $key): array
 }
 ```
 
+### Webhooks
+
+The plugin provides a way to handle incoming webhooks, it uses Laravel Events so you can use habitual way to use them.
+
+> If you don't familiar with Laravel Events, please take a look at [Laravel Docs](https://laravel.com/docs/5.5/events)
+
+There are two ways to define webhook listeners:
+
+1\. Define listeners in the `config/plugin.php`
+
+``` php
+'webhooks' => [
+    'jira:issue_updated' => \App\Listeners\Webhooks\Issue\Created::class,
+    ...
+]
+```
+
+2\. Define listeners using the `Webhook` facade, for example:
+
+``` php
+Webhook::listen('jira:issue_created', function(\Illuminate\Http\Request $request) {
+    // ...
+});
+```
+
+As you can see, you can define event listener as a closure or as a string in Laravel-like syntax:
+
+``` php
+Webhook::listen('jira:issue_created', \App\Listeners\Webhooks\Issue\Created::class);
+Webhook::listen('jira:issue_created', 'App\Listeners\Webhooks\Issue\Created@handle');
+```
+
+#### Example listener
+
+``` php
+<?php
+
+namespace App\Listeners\Webhooks\Issue;
+
+use Illuminate\Http\Request;
+use AtlassianConnectCore\Models\Tenant;
+
+class Created
+{
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Handle incoming webhook
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \AtlassianConnectCore\Models\Tenant $tenant
+     *
+     * @return void
+     */
+    public function handle(Request $request, Tenant $tenant)
+    {
+        // Access the order using $event->order...
+    }
+}
+```
+
+> Your event listeners may also type-hint any dependencies they need on their constructors. 
+All event listeners are resolved via the Laravel service container, so dependencies will be injected automatically.
+
+The handling method have the following parameters:
+
+1. `$request` - Request instance with Webhooks payload.
+1. `$tenant` - Authenticated Tenant model instance.
+
 ### Console commands
 
 * `plugin:install` is a helper command that creates "dummy" tenant with fake data and publishes package resources (config, views, assets)
