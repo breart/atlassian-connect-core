@@ -3,7 +3,6 @@
 namespace AtlassianConnectCore;
 
 use Illuminate\Events\Dispatcher;
-use AtlassianConnectCore\Facades\Descriptor;
 
 /**
  * Class Webhook
@@ -40,7 +39,7 @@ class Webhook
     public function listen(string $name, $listener)
     {
         // Define a webhook in the descriptor
-        Descriptor::webhook($name, $this->url($name));
+        \AtlassianConnectCore\Facades\Descriptor::webhook($name, $this->url($name));
 
         // Register event listener
         $this->dispatcher->listen($this->eventName($name), $listener);
