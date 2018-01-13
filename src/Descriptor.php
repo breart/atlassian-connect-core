@@ -192,7 +192,7 @@ class Descriptor
         // Go through existing webhooks and if there is a webhook with the same name, just replace a url
         foreach ($webhooks as $key => $webhook) {
             if(array_get($webhook, 'event') === $name) {
-                $webhooks[$key]['url'] = $url;
+                $this->set("modules.webhooks.$key.url", $url);
                 return;
             }
         }

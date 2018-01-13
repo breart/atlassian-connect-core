@@ -137,6 +137,32 @@ class DescriptorTest extends TestCase
     }
 
     /**
+     * @covers Descriptor::webhook
+     * @covers Descriptor::webhooks
+     */
+    public function testWebhook()
+    {
+        $this->descriptor->webhook('jira:issue_created', '/test');
+        $this->descriptor->webhook('jira:issue_updated', '/test-update');
+
+        static::assertEquals([
+            ['event' => 'jira:issue_created', 'url' => '/test'],
+            ['event' => 'jira:issue_updated', 'url' => '/test-update']
+        ], array_get($this->descriptor->contents(), 'modules.webhooks'));
+
+        $this->descriptor->webhooks([
+            'jira:issue_created' => '/test-create',
+            'jira:issue_deleted' => '/test-delete'
+        ]);
+
+        static::assertEquals([
+            ['event' => 'jira:issue_created', 'url' => '/test-create'],
+            ['event' => 'jira:issue_updated', 'url' => '/test-update'],
+            ['event' => 'jira:issue_deleted', 'url' => '/test-delete']
+        ], array_get($this->descriptor->contents(), 'modules.webhooks'));
+    }
+
+    /**
      * Create descriptor instance
      *
      * @return \AtlassianConnectCore\Descriptor
