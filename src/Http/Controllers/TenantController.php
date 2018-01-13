@@ -89,6 +89,9 @@ class TenantController extends Controller
      */
     public function webhook(string $name, Request $request)
     {
-        Webhook::fire($name, ['request' => $request]);
+        Webhook::fire($name, [
+            'tenant' => \Illuminate\Support\Facades\Auth::user(),
+            'request' => $request
+        ]);
     }
 }
