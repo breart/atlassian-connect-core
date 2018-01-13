@@ -32,6 +32,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->loadMigrations();
         $this->loadConsoleCommands();
         $this->loadViews();
+        $this->loadWebhooks();
     }
 
     /**
@@ -103,11 +104,22 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     }
 
     /**
+     * Load webhook listeners
+     */
+    protected function loadWebhooks()
+    {
+        foreach (config('plugin.webhooks', []) as $webhook => $listener) {
+            \AtlassianConnectCore\Facades\Webhook::listen($webhook, $listener);
+        }
+    }
+
+    /**
      * Register package facades
      */
     protected function registerFacades()
     {
         $this->app->bind('descriptor', Descriptor::class);
+        $this->app->bind('webhook', Webhook::class);
     }
 
     /**

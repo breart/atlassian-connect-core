@@ -9,6 +9,7 @@ Route::group(['namespace' => 'AtlassianConnectCore\Http\Controllers'], function 
     Route::group(['middleware' => 'jwt'], function () {
         Route::post('enabled', 'TenantController@enabled')->name('enabled');
         Route::post('uninstalled', 'TenantController@uninstalled')->name('uninstalled');
+        Route::post('webhook/{name}', 'TenantController@webhook')->name('webhook');
 
         Route::get('hello', 'SampleController@index')->name('hello');
     });

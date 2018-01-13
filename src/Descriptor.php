@@ -10,9 +10,11 @@ namespace AtlassianConnectCore;
 class Descriptor
 {
     /**
+     * Descriptor contents
+     *
      * @var array
      */
-    private $contents = [];
+    protected $contents = [];
 
     /**
      * Descriptor constructor.
@@ -21,7 +23,7 @@ class Descriptor
      */
     public function __construct(array $contents = [])
     {
-        $this->contents = (!$contents ? $this->defaultContents() : $contents);
+        $this->contents = (empty($contents) ? $this->defaultContents() : $contents);
     }
 
     /**
@@ -175,6 +177,49 @@ class Descriptor
         ]);
 
         return $this;
+    }
+
+    /**
+     * Add or replace a webhook
+     *
+     * @param string $name
+     * @param string $url
+     */
+    public function webhook(string $name, string $url)
+    {
+        $webhooks = $this->get('modules.webhooks', []);
+
+        // Go through existing webhooks and if there is a webhook with the same name, just replace a url
+        foreach ($webhooks as $key => $webhook) {
+            if(array_get($webhook, 'event') === $name) {
+                $this->set("modules.webhooks.$key.url", $url);
+                return;
+            }
+        }
+
+        $webhooks[] = [
+            'event' => $name,
+            'url' => $url
+        ];
+
+        $this->set('modules.webhooks', $webhooks);
+    }
+
+    /**
+     * Define multiple webhooks
+     *
+     * [
+     *   'jira:issue_created' => '/webhook-handler-url',
+     *   ...
+     * ]
+     *
+     * @param array $webhooks
+     */
+    public function webhooks(array $webhooks)
+    {
+        foreach ($webhooks as $name => $url) {
+            $this->webhook($name, $url);
+        }
     }
 
     /**

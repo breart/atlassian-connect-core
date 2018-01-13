@@ -52,7 +52,8 @@
                 "AtlassianConnectCore\\ServiceProvider"
             ],
             "aliases": {
-                "Descriptor": "AtlassianConnectCore\\Facades\\Descriptor"
+                "Descriptor": "AtlassianConnectCore\\Facades\\Descriptor",
+                "Webhook": "AtlassianConnectCore\\Facades\\Webhook"
             }
         }
     },
