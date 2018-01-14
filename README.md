@@ -271,7 +271,7 @@ class Created
     }
 
     /**
-     * Handle incoming webhook
+     * Handle the incoming webhook
      *
      * @param \Illuminate\Http\Request $request
      * @param \AtlassianConnectCore\Models\Tenant $tenant
@@ -280,7 +280,7 @@ class Created
      */
     public function handle(Request $request, Tenant $tenant)
     {
-        // Access the order using $event->order...
+        // ...
     }
 }
 ```
