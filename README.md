@@ -236,7 +236,7 @@ There are two ways to define webhook listeners:
 2\. Define listeners using the `Webhook` facade, for example:
 
 ``` php
-Webhook::listen('jira:issue_created', function(\Illuminate\Http\Request $request, \AtlassianConnectCore\Models\Tenant $tenant) {
+Webhook::listen('jira:issue_created', function(\AtlassianConnectCore\Models\Tenant $tenant, \Illuminate\Http\Request $request) {
     // ...
 });
 ```
@@ -275,12 +275,12 @@ class Created
     /**
      * Handle the incoming webhook
      *
-     * @param \Illuminate\Http\Request $request
      * @param \AtlassianConnectCore\Models\Tenant $tenant
+     * @param \Illuminate\Http\Request $request
      *
      * @return void
      */
-    public function handle(Request $request, Tenant $tenant)
+    public function handle(Tenant $tenant, Request $request)
     {
         // ...
     }
@@ -292,8 +292,8 @@ All event listeners are resolved via the Laravel service container, so dependenc
 
 The handling method have the following parameters:
 
-1. `$request` - Request instance with Webhooks payload.
-2. `$tenant` - Authenticated Tenant model instance. 
+1. `$tenant` - Authenticated Tenant model instance. 
+2. `$request` - Request instance with Webhooks payload.
 
 ### Console commands
 
