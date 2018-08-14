@@ -57,7 +57,7 @@ class JWTHelper
      * Create Query String Hash
      *
      * More details:
-     * https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#creating-token
+     * https://docs.atlassian.com/DAC/bitbucket/concepts/qsh.html
      *
      * @param string $url URL of the request
      * @param string $method HTTP method
@@ -67,40 +67,37 @@ class JWTHelper
     public static function qsh($url, $method)
     {
         $method = strtoupper($method);
+
         $parts = parse_url($url);
+        $path = $parts['path'];
 
-        // Remove "/wiki" part from the path for the Confluence
-        // Really, I didn't find this part in the docs, but it works
-        $path = str_replace('/wiki', '', $parts['path']);
+        // The list of prefixes which must be removed from the path
+        $prefixes = ['/wiki'];
 
-        $canonicalQuery = '';
-
-        if (!empty($parts['query'])) {
-            $query = $parts['query'];
-            $queryParts = explode('&', $query);
-            $queryArray = [];
-
-            foreach ($queryParts as $queryPart) {
-                $pieces = explode('=', $queryPart);
-                $key = array_shift($pieces);
-                $key = rawurlencode($key);
-                $value = substr($queryPart, strlen($key) + 1);
-                $value = rawurlencode($value);
-                $queryArray[$key][] = $value;
-            }
-
-            ksort($queryArray);
-
-            foreach ($queryArray as $key => $pieceOfQuery) {
-                $pieceOfQuery = implode(',', $pieceOfQuery);
-                $canonicalQuery .= $key . '=' . $pieceOfQuery . '&';
-            }
-
-            $canonicalQuery = rtrim($canonicalQuery, '&');
+        foreach ($prefixes as $prefix) {
+            $path = preg_replace('/^' . preg_quote($prefix, '/') . '/', '', $path);
         }
 
-        $qshString = implode('&', [$method, $path, $canonicalQuery]);
-        $qsh = hash('sha256', $qshString);
+        // Parse a query into the map of parameters
+        parse_str($parts['query'], $params);
+
+        // Parameters should be sorted alphabetically
+        ksort($params);
+
+        $canonicalQuery = http_build_query(
+            $params,
+            null,
+            '&',
+            PHP_QUERY_RFC3986
+        );
+
+        $parts = [
+            strtoupper($method),
+            $path,
+            $canonicalQuery
+        ];
+
+        $qsh = hash('sha256', implode('&', $parts));
 
         return $qsh;
     }
