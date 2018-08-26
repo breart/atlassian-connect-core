@@ -2,6 +2,8 @@
 
 namespace AtlassianConnectCore\Helpers;
 
+use AtlassianConnectCore\Http\Auth\QSH;
+
 /**
  * Class JWTHelper
  *
@@ -47,7 +49,7 @@ class JWTHelper
             'iss' => $issuer,
             'iat' => time(),
             'exp' => time() + 86400,
-            'qsh' => static::qsh($url, $method)
+            'qsh' => new QSH($url, $method)
         ];
 
         return \Firebase\JWT\JWT::encode($payload, $secret);
@@ -64,42 +66,9 @@ class JWTHelper
      *
      * @return string
      */
-    public static function qsh($url, $method)
+    public static function qsh($url, $method): string
     {
-        $method = strtoupper($method);
-
-        $parts = parse_url($url);
-        $path = $parts['path'];
-
-        // The list of prefixes which must be removed from the path
-        $prefixes = ['/wiki'];
-
-        foreach ($prefixes as $prefix) {
-            $path = preg_replace('/^' . preg_quote($prefix, '/') . '/', '', $path);
-        }
-
-        // Parse a query into the map of parameters
-        parse_str($parts['query'], $params);
-
-        // Parameters should be sorted alphabetically
-        ksort($params);
-
-        $canonicalQuery = http_build_query(
-            $params,
-            null,
-            '&',
-            PHP_QUERY_RFC3986
-        );
-
-        $parts = [
-            strtoupper($method),
-            $path,
-            $canonicalQuery
-        ];
-
-        $qsh = hash('sha256', implode('&', $parts));
-
-        return $qsh;
+        return new QSH($url, $method);
     }
 
     /**
