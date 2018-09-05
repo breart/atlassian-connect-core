@@ -49,7 +49,7 @@ class JWTHelper
             'iss' => $issuer,
             'iat' => time(),
             'exp' => time() + 86400,
-            'qsh' => new QSH($url, $method)
+            'qsh' => static::qsh($url, $method)
         ];
 
         return \Firebase\JWT\JWT::encode($payload, $secret);
