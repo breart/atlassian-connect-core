@@ -6,11 +6,11 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Atlassian Connect Framework to build add-ons for the JIRA and Confluence
+The easiest way to create an add-on for JIRA and Confluence.
 
 ## Requirements
 
-* Laravel 5.5
+* Laravel 5.5+
 * PHP ~7.0
 
 ## Getting Started
@@ -29,7 +29,7 @@ Register **route middleware** `jwt` by adding to `app\Http\Kernel.php` the follo
 'jwt' => \AtlassianConnectCore\Http\Middleware\JWTAuth::class
 ```
 
-Set authentication driver to `jwt` in `config/auth.php`:
+Set the authentication driver to `jwt` in `config/auth.php`:
 
 ``` php
 'guards' => [
@@ -40,7 +40,7 @@ Set authentication driver to `jwt` in `config/auth.php`:
 ...
 ```
 
-Set model class in `config/auth.php` **providers** section:
+Set the model class in `config/auth.php` **providers** section:
 
 ``` php
 'providers' => [
@@ -64,7 +64,7 @@ protected $subscribe = [
 ];
 ```
 
-Configure database and run the following:
+Configure the database and run:
 
 ```
 php artisan migrate
@@ -73,35 +73,39 @@ php artisan plugin:install
 
 The command `php artisan plugin:install` will publish config, views and resources that you can change for your needs.
 
-Also, it will create "dummy" tenant needed for local testing and development 
-without the need of installing the add-on in real JIRA or Confluence instance.
+Also, it will create "dummy" tenant needed for local testing and developing
+without needing of installing the add-on on real JIRA or Confluence instances.
 
-### Get it working
+### Publishing as an add-on
 
-If your application returns the add-on descriptor on the request 
+> If your application returns the add-on descriptor on the request 
 to URL `http://localhost:8000/atlassian-connect.json` it means you are close to happiness and you can
 install the add-on.
 
-Firstly, you need to enable the development options. 
-Go to the "Manage add-ons" page. You'll see the link "Settings" at bottom of the page. 
-After clicking you'll see two checkboxes that must be selected. Apply your changes.
+**Step 1. Make your application accessible**
 
-For installing the add-on in the instance, the last one should see your server.
-If you are working locally the easiest way is to use [ngrok](https://ngrok.com/).
+To install the add-on in the instance, you should be visible through the internet.
+For testing purposes the easiest way is to use [ngrok](https://ngrok.com/).
 
-After you are visible in the worldwide you should put your actual website URL to environment variable `PLUGIN_URL`.
-Also, you need to configure your add-on by editing the file `config/plugin.php`. 
-Most values may be overwritten using env vars. 
+Then you have it accessible, put your actual website URL to environment variable `PLUGIN_URL`.
 
-Then you need to upload the add-on. Click "Upload add-on" and paste your public URL with descriptor path, 
+> Make sure your add-on is accessible via **HTTPS**, it is a requirement.
+
+**Step 2. Configure your JIRA / Confluence instance**
+
+Configure your add-on using `config/plugin.php`. Most values may be overwritten using env vars. 
+
+**Step 3. Upload your add-on**
+
+Finally, you need to upload the add-on. Click "Upload add-on" and paste your public URL with descriptor path, 
 eg. `https://d1ea31ce.ngrok.io/atlassian-connect.json` or `https://yourplugindomain.com/atlassian-connect.json`
 
-> Note: HTTPS is required
+**Step 4. Testing the successfulness**
 
-After successfully installing you can see "Your add-on" top menu item (in case of JIRA). 
+After the successful installation, on JIRA instance you may see "Your add-on" top menu item. 
 You also can go to the add-on general page by direct link `:product_base_url/plugins/servlet/ac/sample-plugin/hello-page`
 
-> Instead `:product_base_url` you should put your JIRA or Cofluence instance URL (eg. `https://google-dev.atlassian.net`).
+> Instead of `:product_base_url` you should put your JIRA or Cofluence instance URL (eg. `https://google-dev.atlassian.net`).
 
 If you see page working, the application configured and add-on installed correctly.
 
@@ -118,12 +122,7 @@ php artisan vendor:publish --provider="AtlassianConnectCore\ServiceProvider"
 To copy only specific publish you must call this command with option `--tag`. 
 The value can be `public` (to copy assets), `views` and `config`.
 
-## Workflow
-
-### Add-On Configuration
-
-After copying publishes you can see the file `config/plugin.php` in your application. 
-Please, use this configuration file to change add-on properties.
+## Usage
 
 ### Default routes
 
@@ -136,13 +135,13 @@ The following routes are registered by default:
 * `POST /disabled` add-on disabled callback
 * `GET /hello` sample page to persuade all working correctly
 
-You can disable them by setting to `false` config value `plugin.loadRoutes`.
+You may disable them by setting the config value `plugin.loadRoutes` to `false`.
 
 ### Descriptor
 
 You can use `Descriptor` facade to customize or create from scratch your own descriptor contents.
 
-For example, you can customize it by adding to the `app\Providers\AppServiceProvider` in `boot` section the following:
+For example, you may customize it by adding to the `app\Providers\AppServiceProvider` in `boot` section the following:
 
 ``` php
 Descriptor::base() // base descriptor contents
@@ -158,7 +157,7 @@ Descriptor::base() // base descriptor contents
 
 > Warning: if you are using `route` helper in the `AppServiceProvider` you should have `RouteServiceProvider` defined above `AppServiceProvider` in your `app.php` config.
 
-### Performing requests
+### API requests
 
 In most cases of add-on development for Atlassian Product you need to perform requests to the instance. 
 
@@ -169,14 +168,14 @@ For this case you can use `JWTClient`. It uses [GuzzleHttp](https://github.com/g
 #### Pagination
 
 If you want to send a request to an endpoint with pagination you should use `JWTClient::paginate` method. In most cases
-you don't need to pass paginator instance to the `JWTClient` constructor because it will instantiate automatically by resolving 
-your Tenant product type (JIRA or Confluence), but you always can use specific paginator.
+you don't need to pass paginator instance to the `JWTClient` constructor because it will be instantiated automatically by resolving 
+your Tenant product type (JIRA or Confluence), but you always can use the specific paginator.
 
-There are two paginators:
+There are two paginators supported by default:
 * `JiraPaginator`
 * `ConfluencePaginator`
 
-Of course you can extend `Paginator` class and create your own.
+You're always able to extend `Paginator` class and create your own.
 
 #### Examples
 
@@ -185,14 +184,16 @@ Of course you can extend `Paginator` class and create your own.
 ``` php
 use AtlassianConnectCore\Http\Clients\JWTClient;
 
-...
-
-
+/**
+ * Retrieve a Confluence page content.
+ *
+ * @return array
+ */
 public function pageContent(int $id): array
 {
     $client = new JWTClient($this->tenant); // or Auth::user() if you performing a request from the instance
     
-    return $client->get('rest/api/content/ . $id', [
+    return $client->get('rest/api/content/' . $id, [
         'query' => [
             'expand' => 'body.storage'
         ]
@@ -205,20 +206,22 @@ public function pageContent(int $id): array
 ``` php
 use AtlassianConnectCore\Http\Clients\JWTClient;
 
-...
-
-
+/**
+ * Retrieve an issue object.
+ *
+ * @return array
+ */
 public function viewIssue(string $key): array
 {
     $client = new JWTClient($this->tenant);
     
-    return $client->get('rest/api/2/issue/ . $key');
+    return $client->get('rest/api/2/issue/' . $key);
 }
 ```
 
 ### Webhooks
 
-The plugin provides a way to handle incoming webhooks, it uses Laravel Events so you can use habitual way to use them.
+The plugin provides a convenient way to handle incoming webhooks, based on habitual Laravel Events.
 
 > If you don't familiar with Laravel Events, please take a look at [Laravel Docs](https://laravel.com/docs/5.5/events)
 
@@ -248,7 +251,7 @@ Webhook::listen('jira:issue_created', \App\Listeners\Webhooks\Issue\Created::cla
 Webhook::listen('jira:issue_created', 'App\Listeners\Webhooks\Issue\Created@handle');
 ```
 
-> You do not need to define the webhooks within your add-on descriptor, they will be described automatically.
+> You don't need to define the webhooks within your add-on descriptor, they will be described automatically.
 
 #### Example listener
 
@@ -273,7 +276,7 @@ class Created
     }
 
     /**
-     * Handle the incoming webhook
+     * Handle the incoming webhook.
      *
      * @param \AtlassianConnectCore\Models\Tenant $tenant
      * @param \Illuminate\Http\Request $request
@@ -290,15 +293,10 @@ class Created
 > Your event listeners may also type-hint any dependencies they need on their constructors. 
 All event listeners are resolved via the Laravel service container, so dependencies will be injected automatically.
 
-The handling method have the following parameters:
-
-1. `$tenant` - Authenticated Tenant model instance. 
-2. `$request` - Request instance with Webhooks payload.
-
 ### Console commands
 
-* `plugin:install` is a helper command that creates "dummy" tenant with fake data and publishes package resources (config, views, assets)
-* `plugin:dummy` provides interactive way to set tenant as "dummy" without manually editing database
+* `plugin:install` is a helper command that creates "dummy" tenant with the fake data and publishes package resources (config, views, assets)
+* `plugin:dummy` provides interactive way to set a tenant as "dummy" without manually editing database
 
 ## Tests
 
@@ -307,12 +305,6 @@ Run the following in the package folder:
 ```
 vendor/bin/phpunit
 ```
-
-## TODO
-
-* Implement descriptor builder and validator
-* Implement webhooks manager
-* Take out pagination and make more abstract
 
 ## Security
 
