@@ -7,6 +7,7 @@ use AtlassianConnectCore\Services\TenantService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Arr;
 
 /**
  * Class DummyCommand
@@ -97,7 +98,7 @@ class DummyCommand extends Command
             // Make the client key shorter for displaying
             $tenant['client_key'] = substr($tenant['client_key'], -22);
 
-            return array_only($tenant, $attributes);
+            return Arr::only($tenant, $attributes);
         });
     }
 }

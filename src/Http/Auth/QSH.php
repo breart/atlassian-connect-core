@@ -2,6 +2,8 @@
 
 namespace AtlassianConnectCore\Http\Auth;
 
+use Illuminate\Support\Arr;
+
 /**
  * Class QSH creates a Query String Hash
  *
@@ -84,7 +86,7 @@ class QSH
      */
     public function canonicalUri()
     {
-        if(!$path = array_get($this->parts, 'path')) {
+        if(!$path = Arr::get($this->parts, 'path')) {
             return '/';
         }
 
@@ -111,7 +113,7 @@ class QSH
      */
     public function canonicalQuery()
     {
-        if(!$query = array_get($this->parts, 'query')) {
+        if(!$query = Arr::get($this->parts, 'query')) {
             return null;
         }
 
@@ -216,7 +218,7 @@ class QSH
             $key = str_replace('+', ' ', $param);
             $key = rawurlencode(rawurldecode($key));
 
-            $values = array_wrap($value);
+            $values = Arr::wrap($value);
             $values = array_map(function($value) {
                 $value = str_replace('+', ' ', $value);
                 return rawurlencode(rawurldecode($value));
