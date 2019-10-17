@@ -14,7 +14,7 @@ class TenantServiceTest extends TestCase
     /**
      * @inheritdoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -24,7 +24,7 @@ class TenantServiceTest extends TestCase
     /**
      * @inheritdoc
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
