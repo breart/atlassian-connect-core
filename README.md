@@ -8,10 +8,12 @@
 
 The easiest way to create an add-on for JIRA and Confluence.
 
-## Requirements
+## Version Compatibility
 
-* Laravel 5.5+
-* PHP ~7.0
+ Laravel  | Package
+:---------|:----------
+ 5.5.x    | 1.2.x
+ 6.x      | 1.3.x
 
 ## Getting Started
 
@@ -20,7 +22,7 @@ The easiest way to create an add-on for JIRA and Confluence.
 Install dependency via Composer
 
 ``` bash
-$ composer require brezzhnev/atlassian-connect-core
+$ composer require "brezzhnev/atlassian-connect-core=^6.0"
 ```
 
 Register **route middleware** `jwt` by adding to `app\Http\Kernel.php` the following line:
