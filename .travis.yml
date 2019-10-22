@@ -16,19 +16,18 @@ env:
   - ILLUMINATE_VERSION=6.0.* PHPUNIT_VERSION=^8.3
 
 matrix:
-  exclude:
+  include:
     # Don't test Laravel versions higher than 5.5 on PHP 7.0.12
     - php: 7.0.12
+      env: ILLUMINATE_VERSION=5.5.* PHPUNIT_VERSION=~6.0
+    - php: 7.1
       env: ILLUMINATE_VERSION=5.6.* PHPUNIT_VERSION=~7.0
-    - php: 7.0.12
+    - php: 7.1
       env: ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0
-    - php: 7.0.12
+    - php: 7.1
       env: ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=^7.5
-    - php: 7.0.12
+    - php: 7.2
       env: ILLUMINATE_VERSION=6.0.* PHPUNIT_VERSION=^8.3
-    # Don't test Laravel versions higher than 5.8 on PHP 7.1.3
-    - php: 7.1.3
-      env: ILLUMINATE_VERSION=6.0.* PHPUNIT_VERSION=~8.3
 
 sudo: false
 
