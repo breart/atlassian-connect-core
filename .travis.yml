@@ -8,8 +8,39 @@ php:
 services:
   - sqlite
 
+env:
+  - ILLUMINATE_VERSION=5.5.* PHPUNIT_VERSION=~6.0
+  - ILLUMINATE_VERSION=5.6.* PHPUNIT_VERSION=~7.0
+  - ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0
+  - ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=^7.5
+  - ILLUMINATE_VERSION=6.0.* PHPUNIT_VERSION=^8.3
+
+matrix:
+  exclude:
+    - php: 7.0.12
+      env: ILLUMINATE_VERSION=5.5.* PHPUNIT_VERSION=~6.0
+    - php: 7.1.3
+      env: ILLUMINATE_VERSION=5.6.* PHPUNIT_VERSION=~7.0
+    - php: 7.1.3
+      env: ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0
+    - php: 7.1.3
+      env: ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=^7.5
+    - php: 7.2
+      env: ILLUMINATE_VERSION=6.0.* PHPUNIT_VERSION=^8.3
+
 sudo: false
 
+before_install:
+  - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - cp ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ~/xdebug.ini
+  - phpenv config-rm xdebug.ini
+  - composer global require hirak/prestissimo --update-no-dev
+  - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update --prefer-dist
+  - composer require "orchestra/testbench:${ILLUMINATE_VERSION/5\./3\.}" --no-update --prefer-dist
+  - composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update --prefer-dist
+
 install: travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+before_script: phpenv config-add ~/xdebug.ini
 
 script: vendor/bin/phpunit --verbose
