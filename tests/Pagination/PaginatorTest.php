@@ -132,7 +132,7 @@ class PaginatorTest extends \AtlassianConnectCore\Tests\TestCase
         static::assertEquals($expected, $actual);
 
         static::assertEquals($expected, $paginator->getItems());
-        static::assertEquals(array_last($responses), $paginator->getLastResponse());
+        static::assertEquals(Arr::last($responses), $paginator->getLastResponse());
     }
 
     /**
@@ -147,7 +147,7 @@ class PaginatorTest extends \AtlassianConnectCore\Tests\TestCase
      */
     protected function createPaginator(array $config = [], array $responses = [])
     {
-        if(!array_has($config, 'client')) {
+        if(!Arr::has($config, 'client')) {
             $mock = new \GuzzleHttp\Handler\MockHandler($responses);
             $handler = \GuzzleHttp\HandlerStack::create($mock);
             $httpClient = new \GuzzleHttp\Client(['handler' => $handler]);
