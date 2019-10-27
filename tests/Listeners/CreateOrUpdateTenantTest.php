@@ -2,7 +2,7 @@
 
 namespace AtlassianConnectCore\Tests\Listeners;
 
-class CreateOrUpdateTest extends \AtlassianConnectCore\Tests\TestCase
+class CreateOrUpdateTenantTest extends \AtlassianConnectCore\Tests\TestCase
 {
     /**
      * @var \AtlassianConnectCore\Services\TenantService
@@ -17,7 +17,7 @@ class CreateOrUpdateTest extends \AtlassianConnectCore\Tests\TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 
 class InstallCommandTest extends TestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         File::deleteDirectory(base_path(), true);
     }

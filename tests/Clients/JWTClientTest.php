@@ -2,6 +2,8 @@
 
 namespace AtlassianConnectCore\Tests\Clients;
 
+use Illuminate\Support\Arr;
+
 class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
 {
     /**
@@ -161,7 +163,7 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
 
         $actual = $client->paginate('/rest/api/2/configuration');
 
-        $items = array_collapse(array_pluck($responses, 'records'));
+        $items = Arr::collapse(Arr::pluck($responses, 'records'));
 
         static::assertInstanceOf(\AtlassianConnectCore\Pagination\JiraPaginator::class, $client->paginator());
         static::assertEquals($actual, $items);
@@ -217,7 +219,7 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
 
         $actual = $client->paginate('/rest/api/audit');
 
-        $items = array_collapse(array_pluck($responses, 'results'));
+        $items = Arr::collapse(Arr::pluck($responses, 'results'));
 
         static::assertInstanceOf(\AtlassianConnectCore\Pagination\ConfluencePaginator::class, $client->paginator());
         static::assertEquals($actual, $items);
@@ -287,7 +289,7 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
         // We've created Tenant for the Confluence product, but use Jira paginator
         $actual = $client->paginate('/rest/api/2/configuration');
 
-        $items = array_collapse(array_pluck($responses, 'records'));
+        $items = Arr::collapse(Arr::pluck($responses, 'records'));
 
         static::assertInstanceOf(\AtlassianConnectCore\Pagination\JiraPaginator::class, $client->paginator());
         static::assertEquals($actual, $items);

@@ -4,6 +4,7 @@ namespace AtlassianConnectCore\Pagination;
 
 use GuzzleHttp\Client;
 use AtlassianConnectCore\Exceptions\PaginationException;
+use Illuminate\Support\Arr;
 
 /**
  * Class Paginator
@@ -314,7 +315,7 @@ class Paginator implements \Iterator
             return false;
         }
 
-        return !array_has($this->lastResponse, $this->nextKey);
+        return !Arr::has($this->lastResponse, $this->nextKey);
     }
 
     /**
@@ -344,7 +345,7 @@ class Paginator implements \Iterator
             return [];
         }
 
-        $items = array_get($response, $this->itemsKey, []);
+        $items = Arr::get($response, $this->itemsKey, []);
 
         $this->fetchedCount = count($items);
 
@@ -366,7 +367,7 @@ class Paginator implements \Iterator
             return;
         }
 
-        $this->total = array_get($this->lastResponse, $this->totalKey);
+        $this->total = Arr::get($this->lastResponse, $this->totalKey);
     }
 
     /**
@@ -379,8 +380,8 @@ class Paginator implements \Iterator
         if($this->type === self::TYPE_NEXT) {
 
             // Check for "next" key containing next page URL
-            if(strlen($this->nextKey) && array_has($this->lastResponse, $this->nextKey)) {
-                $this->url = array_get($this->lastResponse, $this->nextKey);
+            if(strlen($this->nextKey) && Arr::has($this->lastResponse, $this->nextKey)) {
+                $this->url = Arr::get($this->lastResponse, $this->nextKey);
                 $this->clientConfig = $this->mergeClientConfig(['query' => $this->extractQueryParams($this->url)]);
             }
         }

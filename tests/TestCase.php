@@ -2,12 +2,14 @@
 
 namespace AtlassianConnectCore\Tests;
 
+use Illuminate\Support\Arr;
+
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -17,7 +19,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * @inheritdoc
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         \Mockery::close();
 
@@ -161,6 +163,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'oauth_client_token' => 'eyJob3N0S2V5IjoiZjhlMTEyMTYtMjRiYS1zNDRlLTkxYjgtODQ1YWYzZDk0NWYwIiwiYWRkb25LZXkiOiJzYW1wbGUtcGx1Z2luIn0='
         ];
 
-        return ($key === null ? $data : array_get($data, $key, $default));
+        return ($key === null ? $data : Arr::get($data, $key, $default));
     }
 }

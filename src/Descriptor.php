@@ -2,6 +2,8 @@
 
 namespace AtlassianConnectCore;
 
+use Illuminate\Support\Arr;
+
 /**
  * Class Descriptor
  *
@@ -60,7 +62,7 @@ class Descriptor
      */
     public function set($key, $value)
     {
-        array_set($this->contents, $key, $value);
+        Arr::set($this->contents, $key, $value);
 
         return $this;
     }
@@ -75,7 +77,7 @@ class Descriptor
      */
     public function get($key, $default = null)
     {
-        return array_get($this->contents, $key, $default);
+        return Arr::get($this->contents, $key, $default);
     }
 
     /**
@@ -165,7 +167,7 @@ class Descriptor
      */
     public function base()
     {
-        $this->contents = array_only($this->defaultContents(), [
+        $this->contents = Arr::only($this->defaultContents(), [
             'name',
             'description',
             'key',
@@ -191,7 +193,7 @@ class Descriptor
 
         // Go through existing webhooks and if there is a webhook with the same name, just replace a url
         foreach ($webhooks as $key => $webhook) {
-            if(array_get($webhook, 'event') === $name) {
+            if(Arr::get($webhook, 'event') === $name) {
                 $this->set("modules.webhooks.$key.url", $url);
                 return;
             }

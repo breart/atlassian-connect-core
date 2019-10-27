@@ -3,6 +3,7 @@
 namespace AtlassianConnectCore\Tests\Pagination;
 
 use AtlassianConnectCore\Pagination\Paginator;
+use Illuminate\Support\Arr;
 
 class PaginatorTest extends \AtlassianConnectCore\Tests\TestCase
 {
@@ -73,7 +74,7 @@ class PaginatorTest extends \AtlassianConnectCore\Tests\TestCase
             'perPageKey' => 'pagelen'
         ], $this->createResponses($responses));
 
-        $expected = array_collapse(array_pluck($responses, 'values'));
+        $expected = Arr::collapse(Arr::pluck($responses, 'values'));
         $actual = iterator_to_array($paginator);
 
         static::assertEquals($expected, $actual);
@@ -99,7 +100,7 @@ class PaginatorTest extends \AtlassianConnectCore\Tests\TestCase
             'totalKey' => 'total'
         ], $this->createResponses($responses));
 
-        $expected = array_collapse(array_pluck($responses, 'items'));
+        $expected = Arr::collapse(Arr::pluck($responses, 'items'));
         $actual = iterator_to_array($paginator);
 
         static::assertEquals($expected, $actual);
@@ -125,13 +126,13 @@ class PaginatorTest extends \AtlassianConnectCore\Tests\TestCase
             'nextKey' => 'next'
         ], $this->createResponses($responses));
 
-        $expected = array_collapse(array_pluck($responses, 'results'));
+        $expected = Arr::collapse(Arr::pluck($responses, 'results'));
         $actual = iterator_to_array($paginator);
 
         static::assertEquals($expected, $actual);
 
         static::assertEquals($expected, $paginator->getItems());
-        static::assertEquals(array_last($responses), $paginator->getLastResponse());
+        static::assertEquals(Arr::last($responses), $paginator->getLastResponse());
     }
 
     /**
@@ -146,7 +147,7 @@ class PaginatorTest extends \AtlassianConnectCore\Tests\TestCase
      */
     protected function createPaginator(array $config = [], array $responses = [])
     {
-        if(!array_has($config, 'client')) {
+        if(!Arr::has($config, 'client')) {
             $mock = new \GuzzleHttp\Handler\MockHandler($responses);
             $handler = \GuzzleHttp\HandlerStack::create($mock);
             $httpClient = new \GuzzleHttp\Client(['handler' => $handler]);

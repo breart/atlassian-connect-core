@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use AtlassianConnectCore\Models\Tenant;
 use AtlassianConnectCore\Helpers\JWTHelper;
 use AtlassianConnectCore\Pagination\Paginator;
+use Illuminate\Support\Arr;
 
 /**
  * Class JWTClient
@@ -245,7 +246,7 @@ class JWTClient
 
         $alias = $this->tenant->product_type;
 
-        if(!$paginatorClass = array_get($this->paginators(), $alias)) {
+        if(!$paginatorClass = Arr::get($this->paginators(), $alias)) {
             throw new \Exception('Class for the paginator alias "' . $alias . '" could not be found');
         }
 
