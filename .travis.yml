@@ -1,10 +1,5 @@
 language: php
 
-php:
-  - 7.0.12
-  - 7.1
-  - 7.2
-
 services:
   - sqlite
 
@@ -16,6 +11,7 @@ env:
   - ILLUMINATE_VERSION=6.0.* PHPUNIT_VERSION=^8.3
 
 matrix:
+  fast_finish: true
   include:
     # Don't test Laravel versions higher than 5.5 on PHP 7.0.12
     - php: 7.0.12
