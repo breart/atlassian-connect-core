@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2019-10-27
+
+### Added
+- Support for Laravel 6 (issue #11)
+
 ## [1.2.4] - 2018-09-05
 
 ### Fixed
@@ -61,7 +66,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Package keywords at composer.json
 
-[Unreleased]: https://github.com/brezzhnev/atlassian-connect-core/compare/v1.2.4...HEAD
+[Unreleased]: https://github.com/brezzhnev/atlassian-connect-core/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/brezzhnev/atlassian-connect-core/compare/v1.2.4...v1.3.0
 [1.2.4]: https://github.com/brezzhnev/atlassian-connect-core/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/brezzhnev/atlassian-connect-core/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/brezzhnev/atlassian-connect-core/compare/v1.2.1...v1.2.2

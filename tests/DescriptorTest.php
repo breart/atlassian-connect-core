@@ -2,6 +2,8 @@
 
 namespace AtlassianConnectCore\Tests;
 
+use Illuminate\Support\Arr;
+
 class DescriptorTest extends TestCase
 {
     /**
@@ -12,7 +14,7 @@ class DescriptorTest extends TestCase
     /**
      * @inheritdoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -113,18 +115,18 @@ class DescriptorTest extends TestCase
 
         $this->descriptor->withModules($modules);
 
-        static::assertEquals($modules, array_get($this->descriptor->contents(), 'modules'));
+        static::assertEquals($modules, Arr::get($this->descriptor->contents(), 'modules'));
     }
 
     public function testWithoutModules()
     {
         $this->testWithModules();
 
-        static::assertNotEmpty(array_get($this->descriptor->contents(), 'modules'));
+        static::assertNotEmpty(Arr::get($this->descriptor->contents(), 'modules'));
 
         $this->descriptor->withoutModules();
 
-        static::assertEquals([], array_get($this->descriptor->contents(), 'modules'));
+        static::assertEquals([], Arr::get($this->descriptor->contents(), 'modules'));
     }
 
     public function testSetScopes()
@@ -133,7 +135,7 @@ class DescriptorTest extends TestCase
 
         $this->descriptor->setScopes($scopes);
 
-        static::assertEquals($scopes, array_get($this->descriptor->contents(), 'scopes'));
+        static::assertEquals($scopes, Arr::get($this->descriptor->contents(), 'scopes'));
     }
 
     /**
@@ -148,7 +150,7 @@ class DescriptorTest extends TestCase
         static::assertEquals([
             ['event' => 'jira:issue_created', 'url' => '/test'],
             ['event' => 'jira:issue_updated', 'url' => '/test-update']
-        ], array_get($this->descriptor->contents(), 'modules.webhooks'));
+        ], Arr::get($this->descriptor->contents(), 'modules.webhooks'));
 
         $this->descriptor->webhooks([
             'jira:issue_created' => '/test-create',
@@ -159,7 +161,7 @@ class DescriptorTest extends TestCase
             ['event' => 'jira:issue_created', 'url' => '/test-create'],
             ['event' => 'jira:issue_updated', 'url' => '/test-update'],
             ['event' => 'jira:issue_deleted', 'url' => '/test-delete']
-        ], array_get($this->descriptor->contents(), 'modules.webhooks'));
+        ], Arr::get($this->descriptor->contents(), 'modules.webhooks'));
     }
 
     /**
