@@ -2,7 +2,7 @@
 
 namespace AtlassianConnectCore\Tests\Listeners;
 
-class CreateOrUpdateTest extends \AtlassianConnectCore\Tests\TestCase
+class CreateOrUpdateTenantTest extends \AtlassianConnectCore\Tests\TestCase
 {
     /**
      * @var \AtlassianConnectCore\Services\TenantService
