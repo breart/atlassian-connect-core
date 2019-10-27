@@ -36,7 +36,7 @@ before_install:
   - composer require "orchestra/testbench:${ILLUMINATE_VERSION/5\./3\.}" --no-update --prefer-dist
   - composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update --prefer-dist
 
-install: travis_retry composer install --no-interaction --prefer-dist --no-suggest
+install: travis_retry composer update --no-interaction --prefer-dist --no-suggest
 
 before_script: phpenv config-add ~/xdebug.ini
 
