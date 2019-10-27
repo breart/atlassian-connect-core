@@ -22,7 +22,7 @@ The easiest way to create an add-on for JIRA and Confluence.
 Install dependency via Composer
 
 ``` bash
-$ composer require "brezzhnev/atlassian-connect-core=^6.0"
+$ composer require "brezzhnev/atlassian-connect-core"
 ```
 
 Register **route middleware** `jwt` by adding to `app\Http\Kernel.php` the following line:
