@@ -61,6 +61,10 @@ class QSHTest extends \AtlassianConnectCore\Tests\TestCase
         $this->assertCanonicalQuery('a=x1&a=x10&b=y1&b=y10', 'a=x1,x10&b=y1,y10');
         $this->assertCanonicalQuery('a=another+one&a=one+string&b=and+yet+more&b=more+here', 'a=another%20one,one%20string&b=and%20yet%20more,more%20here');
         $this->assertCanonicalQuery('a=1%2C2%2C3&a=4%2C5%2C6&b=a%2Cb%2Cc&b=d%2Ce%2Cf', 'a=1%2C2%2C3,4%2C5%2C6&b=a%2Cb%2Cc,d%2Ce%2Cf');
+
+        // Parameter values that might evaluate weirdly in PHP
+        $this->assertCanonicalQuery('empty=', 'empty=');
+        $this->assertCanonicalQuery('since=0', 'since=0');
     }
 
     /**

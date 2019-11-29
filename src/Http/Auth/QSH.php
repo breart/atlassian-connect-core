@@ -192,12 +192,9 @@ class QSH
         $pieces = [];
 
         foreach ($this->encodeQueryParams($params) as $param => $values) {
-            $value = implode(',', $values);
-
-            $pieces[] = implode('=', !$value
-                ? [$param]
-                : [$param, $value]
-            );
+            $pieces[] = $values
+                ? implode('=', [$param, implode(',', $values)])
+                : $param;
         }
 
         return implode('&', array_filter($pieces));
