@@ -2,6 +2,7 @@
 
 namespace AtlassianConnectCore\Models;
 
+use DateTimeInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -159,5 +160,10 @@ class Tenant extends Model implements \Illuminate\Contracts\Auth\Authenticatable
     public function isDeleted()
     {
         return $this->deleted_at !== null;
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }
