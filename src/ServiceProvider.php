@@ -127,7 +127,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function registerJWTGuard()
     {
-        Auth::extend('jwt', function (Application $app, $name, array $config)
+        Auth::extend('jwt.atlassian', function (Application $app, $name, array $config)
         {
             return $app->makeWith(JWTGuard::class, [
                 'provider' => Auth::createUserProvider($config['provider']),
