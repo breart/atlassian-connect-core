@@ -438,7 +438,7 @@ class Paginator implements \Iterator
      */
     protected function mergeClientConfig(array $params): array
     {
-        return array_merge($this->clientConfig, $params);
+        return array_merge_recursive($this->clientConfig, $params);
     }
 
     /**
