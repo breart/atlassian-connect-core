@@ -21,14 +21,14 @@ class JiraPaginator extends Paginator
      *
      * @var string
      */
-    protected $perPageKey = 'limit';
+    protected $perPageKey = 'maxResults';
 
     /**
      * The name of key representing offset
      *
      * @var string
      */
-    protected $offsetKey = 'offset';
+    protected $offsetKey = 'startAt';
 
     /**
      * The key of total items value
@@ -42,5 +42,5 @@ class JiraPaginator extends Paginator
      *
      * @var string
      */
-    protected $itemsKey = 'records';
+    protected $itemsKey = 'values';
 }
