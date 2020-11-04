@@ -121,10 +121,10 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
     {
         $responses = [
             [
-                'offset' => 0,
-                'limit' => 2,
+                'startAt' => 0,
+                'maxResults' => 2,
                 'total' => 4,
-                'records' => [
+                'values' => [
                     [
                         'id' => 1,
                         'field' => 'value'
@@ -136,10 +136,10 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
                 ],
             ],
             [
-                'offset' => 2,
-                'limit' => 2,
+                'startAt' => 2,
+                'maxResults' => 2,
                 'total' => 4,
-                'records' => [
+                'values' => [
                     [
                         'id' => 3,
                         'field' => 'value'
@@ -163,7 +163,7 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
 
         $actual = $client->paginate('/rest/api/2/configuration');
 
-        $items = Arr::collapse(Arr::pluck($responses, 'records'));
+        $items = Arr::collapse(Arr::pluck($responses, 'values'));
 
         static::assertInstanceOf(\AtlassianConnectCore\Pagination\JiraPaginator::class, $client->paginator());
         static::assertEquals($actual, $items);
@@ -246,10 +246,10 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
     {
         $responses = [
             [
-                'offset' => 0,
-                'limit' => 2,
+                'startAt' => 0,
+                'maxRecords' => 2,
                 'total' => 4,
-                'records' => [
+                'values' => [
                     [
                         'id' => 1,
                         'field' => 'value'
@@ -261,10 +261,10 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
                 ],
             ],
             [
-                'offset' => 2,
-                'limit' => 2,
+                'startAt' => 2,
+                'maxRecords' => 2,
                 'total' => 4,
-                'records' => [
+                'values' => [
                     [
                         'id' => 3,
                         'field' => 'value'
@@ -289,7 +289,7 @@ class JWTClientTest extends \AtlassianConnectCore\Tests\TestCase
         // We've created Tenant for the Confluence product, but use Jira paginator
         $actual = $client->paginate('/rest/api/2/configuration');
 
-        $items = Arr::collapse(Arr::pluck($responses, 'records'));
+        $items = Arr::collapse(Arr::pluck($responses, 'values'));
 
         static::assertInstanceOf(\AtlassianConnectCore\Pagination\JiraPaginator::class, $client->paginator());
         static::assertEquals($actual, $items);
