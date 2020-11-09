@@ -25,7 +25,6 @@ class UninstalledRequest extends BaseRequest
             'productType' => 'required',
             'description' => 'required',
             'eventType' => 'required',
-            'user_key' => 'required'
         ];
     }
 }

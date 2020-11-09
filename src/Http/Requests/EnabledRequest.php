@@ -26,8 +26,6 @@ class EnabledRequest extends BaseRequest
             'productType' => 'required',
             'description' => 'required',
             'eventType' => 'required',
-            'user_id' => 'required',
-            'user_key' => 'required',
         ];
     }
 }
