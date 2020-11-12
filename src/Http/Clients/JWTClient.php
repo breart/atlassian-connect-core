@@ -238,11 +238,11 @@ class JWTClient
      */
     private function loadPaginator(array $config = [])
     {
-        if($this->paginator) {
+        /*if($this->paginator) {
             $this->paginator->setConfig($config);
 
             return;
-        }
+        }*/
 
         $alias = $this->tenant->product_type;
 
