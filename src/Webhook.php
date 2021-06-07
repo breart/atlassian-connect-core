@@ -55,7 +55,7 @@ class Webhook
      */
     public function fire(string $name, array $payload)
     {
-        $this->dispatcher->fire($this->eventName($name), $payload);
+        $this->dispatcher->dispatch($this->eventName($name), $payload);
     }
 
     /**

@@ -22,14 +22,14 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "firebase/php-jwt": "^5.0",
-        "guzzlehttp/guzzle": "^6.3",
-        "illuminate/support": "^6.0"
+        "guzzlehttp/guzzle": "^7.2",
+        "illuminate/support": "^8.10"
     },
     "require-dev": {
         "mockery/mockery": "^1.2",
-        "orchestra/testbench": "^4.0",
+        "orchestra/testbench": "^6.0",
         "phpunit/phpunit": "^8.4",
         "squizlabs/php_codesniffer": "^2.3"
     },

@@ -2,24 +2,13 @@
 
 namespace AtlassianConnectCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 /**
  * Class EnabledRequest
  *
  * @package AtlassianConnectCore\Http\Requests
  */
-class EnabledRequest extends FormRequest
+class EnabledRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -37,8 +26,6 @@ class EnabledRequest extends FormRequest
             'productType' => 'required',
             'description' => 'required',
             'eventType' => 'required',
-            'user_id' => 'required',
-            'user_key' => 'required',
         ];
     }
 }

@@ -6,7 +6,7 @@ Route::group(['namespace' => 'AtlassianConnectCore\Http\Controllers'], function 
     Route::post('installed', 'TenantController@installed')->name('installed');
     Route::post('disabled', 'TenantController@disabled')->name('disabled');
 
-    Route::group(['middleware' => 'jwt'], function () {
+    Route::group(['middleware' => \AtlassianConnectCore\Http\Middleware\JWTAuth::class ], function () {
         Route::post('enabled', 'TenantController@enabled')->name('enabled');
         Route::post('uninstalled', 'TenantController@uninstalled')->name('uninstalled');
         Route::post('webhook/{name}', 'TenantController@webhook')->name('webhook');

@@ -3,6 +3,7 @@
 namespace AtlassianConnectCore\Http\Auth;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 /**
  * Class QSH creates a Query String Hash
@@ -54,6 +55,8 @@ class QSH
      */
     public function __construct(string $url, string $method)
     {
+        $url = $this->stripBaseUrl($url);
+
         $this->url = $url;
         $this->parts = parse_url($url);
 
@@ -129,7 +132,7 @@ class QSH
         $query = $this->buildQuery($params);
 
         // Encode underscores.
-        $query = str_replace('_', '%20', $query);
+        // $query = str_replace('_', '%20', $query);
 
         return $query;
     }
@@ -235,5 +238,17 @@ class QSH
     public function __toString()
     {
         return $this->create();
+    }
+
+    /**
+     * @param string $url
+     * @return string
+     */
+    private function stripBaseUrl(string $url)
+    {
+        if (Str::startsWith($url, config('plugin.url'))) {
+            $url = Str::replaceFirst(config('plugin.url'), '', $url);
+        }
+        return $url;
     }
 }

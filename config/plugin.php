@@ -124,5 +124,15 @@ return [
      | You can define here listeners of the webhook events
      |
      */
-    'webhooks' => []
+    'webhooks' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guard Alias
+    |--------------------------------------------------------------------------
+    |
+    | Override authentication guard alias.
+    |
+    */
+    'guard' => 'jwt'
 ];
