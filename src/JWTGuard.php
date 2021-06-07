@@ -2,6 +2,7 @@
 
 namespace AtlassianConnectCore;
 
+use AtlassianConnectCore\Http\Auth\QSH;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -87,10 +88,21 @@ class JWTGuard implements Guard
 
         if ($token = request('jwt', request()->header('Authorization'))) {
             $token = last(explode(' ', $token));
+            $tokenKey = $this->getTokenKey($token);
 
+            // First we need to retrive the user to get their public key
             $user = $this->provider->retrieveByCredentials(
-                [$this->storageKey => $this->getTokenKey($token)]
+                [$this->storageKey => $tokenKey]
             );
+
+            // Check if token is actually legit against their public key
+            $body = \Firebase\JWT\JWT::decode($token, $user->shared_secret, ['HS256']);
+
+            // Compare qsh
+            $calculatedQSH = (new QSH(request()->getUri(), request()->getMethod()))->create();
+            if ($body->qsh !== $calculatedQSH) {
+                return null;
+            }
         }
         else {
 

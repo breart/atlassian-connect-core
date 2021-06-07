@@ -175,7 +175,8 @@ class Descriptor
             'vendor',
             'version',
             'authentication',
-            'lifecycle'
+            'lifecycle',
+            'apiMigrations',
         ]);
 
         return $this;
@@ -269,6 +270,9 @@ class Descriptor
                         ]
                     ],
                 ]
+            ],
+            'apiMigrations' => [
+                'context-qsh' => true,
             ]
         ];
     }
