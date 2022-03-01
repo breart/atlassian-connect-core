@@ -273,6 +273,7 @@ class Descriptor
             ],
             'apiMigrations' => [
                 'context-qsh' => true,
+                'signed-install' => false,
             ]
         ];
     }
