@@ -24,13 +24,13 @@
     "require": {
         "php": "^7.2",
         "firebase/php-jwt": "^5.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^6.3|^7.0",
         "illuminate/support": "^6.0|^7.0|^8.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.2",
         "orchestra/testbench": "^4.0",
-        "phpunit/phpunit": "^8.4",
+        "phpunit/phpunit": "^8.4|^9.0",
         "squizlabs/php_codesniffer": "^2.3"
     },
     "autoload": {
